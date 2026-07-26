@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DBS10042 - LINEAR MOTION GRAPH SIMULATOR</title>
+  <style>
+    :root {
+      --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      --card-bg: #1e293b;
+      --card-border: #334155;
+      --text-dark: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Calibri, Cambria, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: var(--text-dark);
+      min-height: 100vh;
+      display: flex;
+      padding: 1.25rem;
+    }
+
+    /* CONTAINER UTAMA */
+    .app-container {
+      display: flex;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      gap: 1.25rem;
+    }
+
+    /* KANDUNGAN UTAMA */
+    .main-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      min-width: 0;
+    }
+
+    /* BUTANG LAMAN UTAMA (BLUE BUTTON) */
+    .btn-home {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #2563eb;
+      color: #ffffff;
+      padding: 10px 20px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      text-decoration: none;
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4);
+      transition: all 0.2s ease;
+      width: fit-content;
+    }
+
+    .btn-home:hover {
+      background: #1d4ed8;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(37, 99, 235, 0.5);
+    }
+
+    /* HEADER BANNER */
+    .header-banner {
+      background: linear-gradient(135deg, #ec4899 0%, #be185d 100%);
+      color: white;
+      padding: 16px 20px;
+      border-radius: 16px;
+      text-align: center;
+      box-shadow: 0 6px 20px rgba(236, 72, 153, 0.25);
+    }
+
+    .header-banner h1 {
+      margin: 0;
+      font-size: 21px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      color: #ffffff;
+    }
+
+    .header-banner p {
+      margin: 5px 0 0 0;
+      font-size: 11px;
+      background: #0f172a;
+      color: #f472b6;
+      display: inline-block;
+      padding: 3px 12px;
+      border-radius: 20px;
+      font-weight: 600;
+      letter-spacing: 0.8px;
+    }
+
+    /* GRID UTAMA (2 KOLUM: KIRI = GRAF & INPUT, KANAN = ANALISIS) */
+    .content-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+      align-items: start;
+    }
+
+    .section-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #f472b6;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .input-card {
+      background: #0f172a;
+      border-radius: 12px;
+      padding: 10px 16px;
+      margin-bottom: 8px;
+      border: 1px solid #334155;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.2s;
+    }
+
+    .input-card:hover {
+      border-color: #f472b6;
+      background: #182238;
+    }
+
+    .input-card b {
+      color: #f472b6;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .input-field-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      color: #94a3b8;
+    }
+
+    input {
+      width: 60px;
+      padding: 5px;
+      border-radius: 6px;
+      border: 1px solid #475569;
+      text-align: center;
+      font-weight: 600;
+      font-size: 13px;
+      color: #f8fafc;
+      background: #1e293b;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    input:focus {
+      border-color: #f472b6;
+      box-shadow: 0 0 0 3px rgba(244, 114, 182, 0.2);
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 12px;
+      margin: 14px 0;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 12px;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      transition: all 0.2s;
+    }
+
+    .btn-add {
+      background: #ec4899;
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(236, 72, 153, 0.3);
+    }
+
+    .btn-add:hover { background: #db2777; }
+
+    .btn-remove {
+      background: #475569;
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(71, 85, 105, 0.3);
+    }
+
+    .btn-remove:hover { background: #334155; }
+
+    .canvas-container {
+      background: #0f172a;
+      border-radius: 16px;
+      padding: 10px;
+      border: 1px solid #334155;
+      box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    canvas {
+      width: 100%;
+      height: 290px;
+      border-radius: 8px;
+    }
+
+    .results-container {
+      background: #0f172a;
+      border-radius: 16px;
+      padding: 16px;
+      border: 1px solid #334155;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100%;
+    }
+
+    .fasa-card {
+      background: #1e293b;
+      border-radius: 10px;
+      padding: 12px;
+      margin-bottom: 8px;
+      border-left: 4px solid #ec4899;
+      font-size: 12px;
+      text-align: left;
+      color: #cbd5e1;
+      line-height: 1.5;
+    }
+
+    .fasa-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: #f8fafc;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .badge-status {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 10px;
+      font-weight: 600;
+      color: white;
+      letter-spacing: 0.5px;
+    }
+
+    .bg-acc { background: #ec4899; }
+    .bg-dec { background: #64748b; }
+    .bg-uni { background: #f59e0b; color: #000; }
+
+    .data-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4px 10px;
+      margin-top: 6px;
+      background: #0f172a;
+      padding: 8px 10px;
+      border-radius: 6px;
+      border: 1px solid #334155;
+      font-weight: 500;
+    }
+
+    .total-card {
+      background: linear-gradient(135deg, #be185d 0%, #9d174d 100%);
+      color: white;
+      border-radius: 14px;
+      padding: 14px;
+      text-align: center;
+      box-shadow: 0 6px 18px rgba(190, 24, 93, 0.3);
+      margin-top: 15px;
+      border: 1px solid #f472b6;
+    }
+
+    .total-card-title {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: #fbcfe8;
+    }
+
+    .total-card-value {
+      font-size: 28px;
+      font-weight: 700;
+      margin-top: 2px;
+      color: #ffffff;
+    }
+
+    @media (max-width: 850px) {
+      .content-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+
+    <!-- CONTENT UTAMA -->
+    <div class="main-content">
+      
+
+      <!-- HEADER BANNER -->
+      <div class="header-banner">
+        <h1>SIMULATOR: Velocity vs Time Graph</h1>
+        
+      </div>
+
+      <!-- DUA KOLUM SEBELAH-MENYEBELAH -->
+      <div class="content-grid">
+        
+        <!-- KOLUM KIRI: INPUT & CANVAS GRAF -->
+        <div class="left-column">
+          <div class="section-title">📌 COORDINATE POINTS ON GRAPH (MAX 6)</div>
+          <div id="pointsContainer"></div>
+
+          <div class="btn-group">
+            <button class="btn btn-add" onclick="addPoint()">+ Add Point</button>
+            <button class="btn btn-remove" onclick="removePoint()">- Remove Point</button>
+          </div>
+
+          <div class="canvas-container">
+            <canvas id="graphCanvas" width="500" height="290"></canvas>
+          </div>
+        </div>
+
+        <!-- KOLUM KANAN: HASIL ANALISIS & TOTAL DISTANCE -->
+        <div class="right-column">
+          <div class="results-container">
+            <div>
+              <div class="section-title">📊 GRAPH MOTION ANALYSIS</div>
+              <div id="accDetails"></div>
+            </div>
+
+            <div class="total-card">
+              <div class="total-card-title">🚗 TOTAL DISTANCE / DISPLACEMENT (s)</div>
+              <div class="total-card-value"><span id="totalDistance">0</span> m</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+    let pointsData = [
+      { t: 0, v: 10 },
+      { t: 20, v: 80 },
+      { t: 25, v: 30 },
+      { t: 30, v: 80 }
+    ];
+
+    const maxPoints = 6;
+    const minPoints = 2;
+
+    function renderInputs() {
+      const container = document.getElementById('pointsContainer');
+      container.innerHTML = '';
+      pointsData.forEach((p, idx) => {
+        const card = document.createElement('div');
+        card.className = 'input-card';
+        card.innerHTML = `
+          <b>Titik ${idx + 1}</b>
+          <div class="input-field-group">
+            Halaju (v): <input type="number" id="v_${idx}" value="${p.v}" oninput="autoUpdate()"> m/s
+          </div>
+          <div class="input-field-group">
+            Masa (t): <input type="number" id="t_${idx}" value="${p.t}" oninput="autoUpdate()"> s
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function autoUpdate() {
+      pointsData.forEach((_, idx) => {
+        const tVal = parseFloat(document.getElementById(`t_${idx}`).value);
+        const vVal = parseFloat(document.getElementById(`v_${idx}`).value);
+        pointsData[idx] = { 
+          t: isNaN(tVal) ? 0 : tVal, 
+          v: isNaN(vVal) ? 0 : vVal 
+        };
+      });
+
+      calculateAndDraw();
+    }
+
+    function addPoint() {
+      if (pointsData.length < maxPoints) {
+        let lastT = pointsData[pointsData.length - 1].t + 10;
+        let lastV = pointsData[pointsData.length - 1].v;
+        pointsData.push({ t: lastT, v: lastV });
+        renderInputs();
+        autoUpdate();
+      } else {
+        alert("Maksimum 6 titik sahaja dibenarkan!");
+      }
+    }
+
+    function removePoint() {
+      if (pointsData.length > minPoints) {
+        pointsData.pop();
+        renderInputs();
+        autoUpdate();
+      } else {
+        alert("Minimum 2 titik diperlukan!");
+      }
+    }
+
+    function calculateAndDraw() {
+      let sortedPoints = [...pointsData].sort((a, b) => a.t - b.t);
+
+      let accHtml = "";
+      let totalDistance = 0;
+
+      for (let i = 0; i < sortedPoints.length - 1; i++) {
+        let dt = sortedPoints[i+1].t - sortedPoints[i].t;
+        let dv = sortedPoints[i+1].v - sortedPoints[i].v;
+
+        let u_val = sortedPoints[i].v;
+        let v_val = sortedPoints[i+1].v;
+
+        let acc = dt !== 0 ? (dv / dt).toFixed(2) : 0;
+        let area = 0.5 * (u_val + v_val) * dt;
+        totalDistance += area;
+
+        let statusText = "";
+        let badgeClass = "";
+
+        if (acc > 0) {
+          statusText = "UNIFORM ACCELERATION";
+          badgeClass = "bg-acc";
+        } else if (acc < 0) {
+          statusText = "UNIFORM DECELERATION";
+          badgeClass = "bg-dec";
+        } else {
+          statusText = "UNIFORM VELOCITY";
+          badgeClass = "bg-uni";
+        }
+
+        accHtml += `<div class="fasa-card">` +
+                   `<div class="fasa-title">` +
+                     `<span>📍 Fasa ${i+1} (${sortedPoints[i].t}s ➔ ${sortedPoints[i+1].t}s)</span>` +
+                     `<span class="badge-status ${badgeClass}">${statusText}</span>` +
+                   `</div>` +
+                   `<div class="data-grid">` +
+                     `<div>• Halaju Awal, u: <b style="color:#f472b6">${u_val} m/s</b></div>` +
+                     `<div>• Halaju Akhir, v: <b style="color:#38bdf8">${v_val} m/s</b></div>` +
+                     `<div>• Pecutan, a: <b style="color:#94a3b8">${acc} m/s²</b></div>` +
+                     `<div>• Distance / Displacement, s: <b style="color:#34d399">${area.toFixed(1)} m</b></div>` +
+                   `</div>` +
+                   `</div>`;
+      }
+
+      document.getElementById('accDetails').innerHTML = accHtml;
+      document.getElementById('totalDistance').innerText = totalDistance.toFixed(1);
+
+      drawCanvas(sortedPoints);
+    }
+
+    function drawCanvas(pts) {
+      const canvas = document.getElementById('graphCanvas');
+      const ctx = canvas.getContext('2d');
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#0f172a';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      const paddingLeft = 55; 
+      const paddingBottom = 45;
+      const paddingTop = 35;
+      const paddingRight = 45;
+
+      const maxT = Math.max(...pts.map(p => p.t), 1);
+      const maxV = Math.max(...pts.map(p => p.v), 1);
+
+      const mapX = (t) => paddingLeft + (t / maxT) * (canvas.width - paddingLeft - paddingRight);
+      const mapY = (v) => canvas.height - paddingBottom - (v / maxV) * (canvas.height - paddingTop - paddingBottom);
+
+      ctx.strokeStyle = '#1e293b';
+      ctx.lineWidth = 1;
+      for (let x = paddingLeft; x <= canvas.width - paddingRight; x += 25) {
+        ctx.beginPath(); ctx.moveTo(x, paddingTop); ctx.lineTo(x, canvas.height - paddingBottom); ctx.stroke();
+      }
+      for (let y = paddingTop; y <= canvas.height - paddingBottom; y += 25) {
+        ctx.beginPath(); ctx.moveTo(paddingLeft, y); ctx.lineTo(canvas.width - paddingRight, y); ctx.stroke();
+      }
+
+      ctx.beginPath();
+      ctx.moveTo(paddingLeft, paddingTop); ctx.lineTo(paddingLeft, canvas.height - paddingBottom);
+      ctx.lineTo(canvas.width - 15, canvas.height - paddingBottom);
+      ctx.strokeStyle = '#64748b'; ctx.lineWidth = 2; ctx.stroke();
+
+      ctx.font = '600 12px "Segoe UI", Calibri, sans-serif'; 
+      
+      ctx.fillStyle = '#f472b6';
+      ctx.fillText('Velocity (m/s)', paddingLeft - 40, paddingTop - 12);
+
+      ctx.fillStyle = '#94a3b8';
+      ctx.fillText('Time (s)', canvas.width - 55, canvas.height - 12);
+
+      let gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+      gradient.addColorStop(0, 'rgba(236, 72, 153, 0.35)');
+      gradient.addColorStop(1, 'rgba(236, 72, 153, 0.02)');
+
+      ctx.beginPath();
+      ctx.moveTo(mapX(pts[0].t), canvas.height - paddingBottom);
+      pts.forEach(p => ctx.lineTo(mapX(p.t), mapY(p.v)));
+      ctx.lineTo(mapX(pts[pts.length - 1].t), canvas.height - paddingBottom);
+      ctx.fillStyle = gradient;
+      ctx.fill();
+
+      ctx.shadowColor = '#ec4899';
+      ctx.shadowBlur = 8;
+      ctx.beginPath();
+      ctx.moveTo(mapX(pts[0].t), mapY(pts[0].v));
+      pts.forEach(p => ctx.lineTo(mapX(p.t), mapY(p.v)));
+      ctx.strokeStyle = '#f472b6'; ctx.lineWidth = 3; ctx.stroke();
+      ctx.shadowBlur = 0;
+
+      pts.forEach((p) => {
+        let x = mapX(p.t);
+        let y = mapY(p.v);
+
+        ctx.beginPath(); ctx.setLineDash([3, 3]);
+        ctx.moveTo(x, y); ctx.lineTo(x, canvas.height - paddingBottom);
+        ctx.moveTo(x, y); ctx.lineTo(paddingLeft, y);
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)'; ctx.stroke(); ctx.setLineDash([]);
+
+        ctx.beginPath(); ctx.arc(x, y, 5, 0, 2 * Math.PI);
+        ctx.fillStyle = '#f472b6'; ctx.fill();
+        ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 2; ctx.stroke();
+
+        ctx.fillStyle = '#cbd5e1';
+        ctx.font = '500 11px "Segoe UI", Calibri, sans-serif';
+        ctx.fillText(`${p.v}`, paddingLeft - 22, y + 4);
+        ctx.fillText(`${p.t}`, x - 4, canvas.height - paddingBottom + 16);
+      });
+    }
+
+    renderInputs();
+    autoUpdate();
+  </script>
+
+</body>
+</html>
