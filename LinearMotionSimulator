@@ -46,23 +46,7 @@
       min-width: 0;
     }
 
-    /* BUTANG LAMAN UTAMA (BLUE BUTTON) */
-    .btn-home {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: #2563eb;
-      color: #ffffff;
-      padding: 10px 20px;
-      border-radius: 12px;
-      font-weight: 700;
-      font-size: 0.9rem;
-      text-decoration: none;
-      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4);
-      transition: all 0.2s ease;
-      width: fit-content;
-    }
-
+  
     .btn-home:hover {
       background: #1d4ed8;
       transform: translateY(-2px);
@@ -415,7 +399,7 @@
         renderInputs();
         autoUpdate();
       } else {
-        alert("Maksimum 6 titik sahaja dibenarkan!");
+        alert("Maximum of 6 points is allowed!");
       }
     }
 
