@@ -290,8 +290,32 @@
       color: #ffffff;
     }
 
+    /* FOOTER STYLING */
+    footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 16px;
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 12px;
+      font-size: 12px;
+      color: #94a3b8;
+      margin-top: 0.5rem;
+    }
+
+    .github-tag span {
+      color: #f472b6;
+      font-weight: 600;
+    }
+
     @media (max-width: 850px) {
       .content-grid { grid-template-columns: 1fr; }
+      footer {
+        flex-direction: column;
+        gap: 6px;
+        text-align: center;
+      }
     }
   </style>
 </head>
@@ -343,6 +367,14 @@
         </div>
 
       </div>
+
+      <!-- Footer Bottom Bar -->
+      <footer>
+        <div>Unit Sains, JMSK PPD</div>
+        <div class="github-tag">
+          <span>🌐 Powered by GitHub Pages</span>
+        </div>
+      </footer>
 
     </div>
 
@@ -547,14 +579,6 @@
     renderInputs();
     autoUpdate();
   </script>
-      <!-- Footer Bottom Bar -->
-      <footer>
-        <div>Unit Sains, JMSK PPD</div>
-        <div class="github-tag">
-          <span>🌐 Powered by GitHub Pages</span>
-        </div>
-      </footer>
 
-    </div>
 </body>
 </html>
