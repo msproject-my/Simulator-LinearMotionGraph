@@ -3,8 +3,49 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DBS10042 - LINEAR MOTION GRAPH SIMULATOR</title>
+  <title>DBS10042 - LINEAR MOTION GRAPH SIMULATOR - Engineering Toolkit</title>
+  
+  <!-- Meta tag perlindungan framing / clickjacking asas -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="robots" content="noarchive, noindex">
+
+  <!-- Open Graph Metadata -->
+  <meta property="og:title" content="DBS10042 - Linear Motion Graph Simulator" />
+  <meta property="og:description" content="Velocity vs Time Graph Motion Simulator by MOHDSAIFULPAHRUDIN." />
+  <meta property="og:type" content="website" />
+
   <style>
+    /* ========================================================= */
+    /* CIRI KESELAMATAN CSS: SEKAT SELEKSI TEKS & DRAG ELEMEN    */
+    /* ========================================================= */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Calibri, Cambria, sans-serif;
+      
+      /* Menghalang teks disorot untuk disalin */
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      -webkit-touch-callout: none;
+    }
+
+    /* Membenarkan pengguna menaip dan memilih nombor dalam input */
+    input {
+      -webkit-user-select: auto !important;
+      -moz-user-select: auto !important;
+      -ms-user-select: auto !important;
+      user-select: auto !important;
+    }
+
+    /* Menghalang imej & canvas ditarik keluar (drag & drop) */
+    img, canvas {
+      -webkit-user-drag: none;
+      user-drag: none;
+    }
+
     :root {
       --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
       --card-bg: #1e293b;
@@ -13,19 +54,40 @@
       --text-muted: #94a3b8;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', Calibri, Cambria, sans-serif;
-    }
-
     body {
-      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      background: var(--bg-gradient);
       color: var(--text-dark);
       min-height: 100vh;
       display: flex;
-      padding: 1.25rem;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 1rem 1.25rem;
+    }
+
+    /* TOP BAR LENCANA KESELAMATAN */
+    .top-navbar {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto 0.75rem auto;
+    }
+
+    .badge-secure {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(51, 65, 85, 0.75);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      color: #cbd5e1;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 5px 12px;
+      border-radius: 9999px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
     }
 
     /* CONTAINER UTAMA */
@@ -35,22 +97,15 @@
       max-width: 1200px;
       margin: 0 auto;
       gap: 1.25rem;
+      flex: 1;
     }
 
-    /* KANDUNGAN UTAMA */
     .main-content {
       flex: 1;
       display: flex;
       flex-direction: column;
       gap: 1rem;
       min-width: 0;
-    }
-
-  
-    .btn-home:hover {
-      background: #1d4ed8;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 18px rgba(37, 99, 235, 0.5);
     }
 
     /* HEADER BANNER */
@@ -61,14 +116,16 @@
       border-radius: 16px;
       text-align: center;
       box-shadow: 0 6px 20px rgba(236, 72, 153, 0.25);
+      border: 1px solid rgba(244, 114, 182, 0.3);
     }
 
     .header-banner h1 {
       margin: 0;
       font-size: 21px;
-      font-weight: 600;
+      font-weight: 700;
       letter-spacing: 0.5px;
       color: #ffffff;
+      text-transform: uppercase;
     }
 
     .header-banner p {
@@ -83,7 +140,7 @@
       letter-spacing: 0.8px;
     }
 
-    /* GRID UTAMA (2 KOLUM: KIRI = GRAF & INPUT, KANAN = ANALISIS) */
+    /* GRID UTAMA */
     .content-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -201,6 +258,7 @@
       width: 100%;
       height: 290px;
       border-radius: 8px;
+      display: block;
     }
 
     .results-container {
@@ -290,18 +348,33 @@
       color: #ffffff;
     }
 
-    /* FOOTER STYLING */
+    /* FOOTER STYLING DENGAN HAK CIPTA RASMI */
     footer {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 12px 16px;
+      flex-direction: column;
+      gap: 6px;
+      padding: 14px 16px;
       background: #0f172a;
       border: 1px solid #334155;
       border-radius: 12px;
       font-size: 12px;
       color: #94a3b8;
-      margin-top: 0.5rem;
+      margin-top: 1rem;
+      text-align: center;
+    }
+
+    .footer-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+
+    .footer-copyright {
+      border-top: 1px solid rgba(51, 65, 85, 0.8);
+      padding-top: 8px;
+      font-size: 0.76rem;
+      color: #64748b;
     }
 
     .github-tag span {
@@ -309,28 +382,72 @@
       font-weight: 600;
     }
 
+    /* Toast Amaran Keselamatan & Notis Aplikasi */
+    .toast-warning {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: rgba(30, 41, 59, 0.96);
+      border: 1px solid rgba(244, 114, 182, 0.3);
+      backdrop-filter: blur(8px);
+      color: #ffffff;
+      padding: 10px 20px;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 99999;
+    }
+
+    .toast-warning.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    .toast-warning svg {
+      width: 18px;
+      height: 18px;
+      fill: #f59e0b;
+      flex-shrink: 0;
+    }
+
     @media (max-width: 850px) {
       .content-grid { grid-template-columns: 1fr; }
-      footer {
+      .footer-top {
         flex-direction: column;
         gap: 6px;
-        text-align: center;
       }
     }
   </style>
 </head>
-<body>
+<body oncontextmenu="return false;" ondragstart="return false;" onselectstart="return false;">
+
+  <!-- Lencana Keselamatan Atas (Tanpa Butang Home) -->
+  <div class="top-navbar">
+    <div class="badge-secure">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/>
+      </svg>
+      Protected Tool
+    </div>
+  </div>
 
   <div class="app-container">
 
     <!-- CONTENT UTAMA -->
     <div class="main-content">
-      
 
       <!-- HEADER BANNER -->
       <div class="header-banner">
         <h1>SIMULATOR: Velocity vs Time Graph</h1>
-        
+        <p>DBS10042 • Engineering Mechanics & Motion Analysis</p>
       </div>
 
       <!-- DUA KOLUM SEBELAH-MENYEBELAH -->
@@ -342,8 +459,8 @@
           <div id="pointsContainer"></div>
 
           <div class="btn-group">
-            <button class="btn btn-add" onclick="addPoint()">+ Add Point</button>
-            <button class="btn btn-remove" onclick="removePoint()">- Remove Point</button>
+            <button class="btn btn-add" type="button" onclick="addPoint()">+ Add Point</button>
+            <button class="btn btn-remove" type="button" onclick="removePoint()">- Remove Point</button>
           </div>
 
           <div class="canvas-container">
@@ -368,11 +485,16 @@
 
       </div>
 
-      <!-- Footer Bottom Bar -->
+      <!-- Footer Bottom Bar Rasmi dengan Hak Cipta MOHDSAIFULPAHRUDIN -->
       <footer>
-        <div>Unit Sains, JMSK PPD</div>
-        <div class="github-tag">
-          <span>🌐 Powered by GitHub Pages</span>
+        <div class="footer-top">
+          <div>Unit Sains, JMSK PPD</div>
+          <div class="github-tag">
+            <span>🌐 Powered by GitHub Pages</span>
+          </div>
+        </div>
+        <div class="footer-copyright">
+          &copy; 2026 Engineering Measurement Toolkit by <strong>MOHDSAIFULPAHRUDIN</strong>. All rights reserved. Proprietary and confidential.
         </div>
       </footer>
 
@@ -380,7 +502,18 @@
 
   </div>
 
+  <!-- UI Toast untuk amaran keselamatan & notis sistem -->
+  <div id="securityToast" class="toast-warning" role="alert" aria-live="assertive">
+    <svg viewBox="0 0 24 24">
+      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+    </svg>
+    <span>Content & code are protected by copyright. Action disabled.</span>
+  </div>
+
   <script>
+    /* ========================================================================= */
+    /* 1. LOGIK SIMULATOR GRAF HALAJU-MASA (LINEAR MOTION)                       */
+    /* ========================================================================= */
     let pointsData = [
       { t: 0, v: 10 },
       { t: 20, v: 80 },
@@ -412,12 +545,16 @@
 
     function autoUpdate() {
       pointsData.forEach((_, idx) => {
-        const tVal = parseFloat(document.getElementById(`t_${idx}`).value);
-        const vVal = parseFloat(document.getElementById(`v_${idx}`).value);
-        pointsData[idx] = { 
-          t: isNaN(tVal) ? 0 : tVal, 
-          v: isNaN(vVal) ? 0 : vVal 
-        };
+        const tEl = document.getElementById(`t_${idx}`);
+        const vEl = document.getElementById(`v_${idx}`);
+        if (tEl && vEl) {
+          const tVal = parseFloat(tEl.value);
+          const vVal = parseFloat(vEl.value);
+          pointsData[idx] = { 
+            t: isNaN(tVal) ? 0 : tVal, 
+            v: isNaN(vVal) ? 0 : vVal 
+          };
+        }
       });
 
       calculateAndDraw();
@@ -431,7 +568,7 @@
         renderInputs();
         autoUpdate();
       } else {
-        alert("Maximum of 6 points is allowed!");
+        notifySecurityBreach("Maksimum 6 titik koordinat sahaja dibenarkan!");
       }
     }
 
@@ -441,7 +578,7 @@
         renderInputs();
         autoUpdate();
       } else {
-        alert("Minimum 2 titik diperlukan!");
+        notifySecurityBreach("Minimum 2 titik koordinat diperlukan!");
       }
     }
 
@@ -498,6 +635,7 @@
 
     function drawCanvas(pts) {
       const canvas = document.getElementById('graphCanvas');
+      if (!canvas) return;
       const ctx = canvas.getContext('2d');
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -576,9 +714,102 @@
       });
     }
 
-    renderInputs();
-    autoUpdate();
-  </script>
+    window.onload = function() {
+      renderInputs();
+      autoUpdate();
+    };
 
+    /* ========================================================================= */
+    /* 2. FRAME-BUSTING: Menghalang embed dalam iframe luar                      */
+    /* ========================================================================= */
+    try {
+      if (window.top !== window.self) {
+        window.top.location = window.self.location;
+      }
+    } catch (e) {
+      console.warn("Iframe embedding detection triggered.");
+    }
+
+    /* ========================================================================= */
+    /* 3. SISTEM NOTIFIKASI KESELAMATAN (Ganti alert bawaan browser)             */
+    /* ========================================================================= */
+    let toastTimeout;
+    function notifySecurityBreach(customMessage) {
+      const toast = document.getElementById('securityToast');
+      if (customMessage) {
+        toast.querySelector('span').textContent = customMessage;
+      }
+      toast.classList.add('show');
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toast.classList.remove('show');
+      }, 2500);
+    }
+
+    /* ========================================================================= */
+    /* 4. SEKAT KLIK KANAN (Context Menu)                                        */
+    /* ========================================================================= */
+    document.addEventListener('contextmenu', function(e) {
+      e.preventDefault();
+      notifySecurityBreach("Right-click is disabled to protect intellectual property.");
+      return false;
+    });
+
+    /* ========================================================================= */
+    /* 5. SEKAT SHORTCUT DEVTOOLS, INSPECT, VIEW-SOURCE, & SAVE                  */
+    /* ========================================================================= */
+    document.addEventListener('keydown', function(e) {
+      // F12 (DevTools)
+      if (e.key === 'F12' || e.keyCode === 123) {
+        e.preventDefault();
+        notifySecurityBreach("Developer tools access is restricted.");
+        return false;
+      }
+
+      // Ctrl+Shift+I (Inspect), Ctrl+Shift+J (Console), Ctrl+Shift+C (Element selector)
+      if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j' || e.key === 'C' || e.key === 'c')) {
+        e.preventDefault();
+        notifySecurityBreach("Inspect Element is disabled.");
+        return false;
+      }
+
+      // Ctrl+U (View Page Source)
+      if (e.ctrlKey && (e.key === 'u' || e.key === 'U')) {
+        e.preventDefault();
+        notifySecurityBreach("Viewing source code is disabled.");
+        return false;
+      }
+
+      // Ctrl+S (Simpan laman web)
+      if (e.ctrlKey && (e.key === 's' || e.key === 'S')) {
+        e.preventDefault();
+        notifySecurityBreach("Saving this page is disabled.");
+        return false;
+      }
+
+      // Ctrl+C (Menyalin jika berada di luar medan input)
+      if (e.ctrlKey && (e.key === 'c' || e.key === 'C')) {
+        const activeTag = document.activeElement ? document.activeElement.tagName.toLowerCase() : '';
+        if (activeTag !== 'input' && activeTag !== 'textarea') {
+          e.preventDefault();
+          notifySecurityBreach("Copying content is disabled.");
+          return false;
+        }
+      }
+    });
+
+    /* ========================================================================= */
+    /* 6. AMARAN KONSOL JIKA SESEORANG MEMBUKA DEVTOOLS                          */
+    /* ========================================================================= */
+    console.clear();
+    console.log(
+      "%cSTOP! HAK CIPTA TERPELIHARA.",
+      "color: #ec4899; font-size: 24px; font-weight: bold; -webkit-text-stroke: 1px black;"
+    );
+    console.log(
+      "%cSebarang penyalinan, pengubahsuaian, atau pengedaran kod ini tanpa kebenaran MOHDSAIFULPAHRUDIN adalah dilarang sama sekali.",
+      "color: #94a3b8; font-size: 13px; font-weight: 600;"
+    );
+  </script>
 </body>
 </html>
