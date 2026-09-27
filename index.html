@@ -313,7 +313,7 @@
     .data-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 4px 10px;
+      gap: 6px 12px;
       margin-top: 6px;
       background: #0f172a;
       padding: 8px 10px;
@@ -619,10 +619,11 @@
                      `<span class="badge-status ${badgeClass}">${statusText}</span>` +
                    `</div>` +
                    `<div class="data-grid">` +
+                     `<div>• Masa, t: <b style="color:#fbbf24">${dt} s</b></div>` +
+                     `<div>• Pecutan, a: <b style="color:#94a3b8">${acc} m/s²</b></div>` +
                      `<div>• Halaju Awal, u: <b style="color:#f472b6">${u_val} m/s</b></div>` +
                      `<div>• Halaju Akhir, v: <b style="color:#38bdf8">${v_val} m/s</b></div>` +
-                     `<div>• Pecutan, a: <b style="color:#94a3b8">${acc} m/s²</b></div>` +
-                     `<div>• Distance / Displacement, s: <b style="color:#34d399">${area.toFixed(1)} m</b></div>` +
+                     `<div style="grid-column: 1 / -1;">• Distance / Displacement, s: <b style="color:#34d399">${area.toFixed(1)} m</b></div>` +
                    `</div>` +
                    `</div>`;
       }
